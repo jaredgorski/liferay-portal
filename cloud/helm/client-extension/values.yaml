@@ -4,7 +4,7 @@ autoscaling:
   maxReplicas: 100
   minReplicas: 1
   targetCPUUtilizationPercentage: 80
-cxConfig:
+clientExtensionConfig:
   configJson: |
     {
       "com.liferay.client.extension.type.configuration.CETConfiguration~liferay-sample-theme-css-1" : {

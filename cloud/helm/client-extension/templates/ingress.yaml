@@ -1,9 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "liferay-cx.fullname" . }}
+  name: {{ include "liferay-client-extension.fullname" . }}
   labels:
-    {{- include "liferay-cx.labels" . | nindent 4 }}
+    {{- include "liferay-client-extension.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -23,12 +23,12 @@ spec:
     {{- end }}
   {{- end }}
   rules:
-    - host: {{ .Values.cxConfig.domain | quote }}
+    - host: {{ .Values.clientExtensionConfig.domain | quote }}
       http:
         paths:
           - backend:
               service:
-                name: {{ include "liferay-cx.fullname" $ }}
+                name: {{ include "liferay-client-extension.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
             path: /
@@ -44,7 +44,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "liferay-cx.fullname" $ }}
+                name: {{ include "liferay-client-extension.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}
