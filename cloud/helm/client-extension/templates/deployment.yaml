@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "liferay-cx.fullname" . }}
+  name: {{ include "liferay-client-extension.fullname" . }}
   labels:
-    {{- include "liferay-cx.labels" . | nindent 4 }}
+    {{- include "liferay-client-extension.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "liferay-cx.selectorLabels" . | nindent 6 }}
+      {{- include "liferay-client-extension.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "liferay-cx.labels" . | nindent 8 }}
+        {{- include "liferay-client-extension.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "liferay-cx.serviceAccountName" . }}
+      serviceAccountName: {{ include "liferay-client-extension.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}

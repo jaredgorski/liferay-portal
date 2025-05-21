@@ -2,14 +2,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "liferay-cx.fullname" . }}
+  name: {{ include "liferay-client-extension.fullname" . }}
   labels:
-    {{- include "liferay-cx.labels" . | nindent 4 }}
+    {{- include "liferay-client-extension.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "liferay-cx.fullname" . }}
+    name: {{ include "liferay-client-extension.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
