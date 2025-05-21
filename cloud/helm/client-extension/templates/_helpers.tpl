@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "liferay-cx.name" -}}
+{{- define "liferay-client-extension.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "liferay-cx.fullname" -}}
+{{- define "liferay-client-extension.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,71 +26,71 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "liferay-cx.chart" -}}
+{{- define "liferay-client-extension.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 App name
 */}}
-{{- define "liferay-cx.appname" -}}
+{{- define "liferay-client-extension.appname" -}}
 {{- default .Release.Name .Values.nameOverride .Chart.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "liferay-cx.labels" -}}
-helm.sh/chart: {{ include "liferay-cx.chart" . }}
-{{ include "liferay-cx.selectorLabels" . }}
+{{- define "liferay-client-extension.labels" -}}
+helm.sh/chart: {{ include "liferay-client-extension.chart" . }}
+{{ include "liferay-client-extension.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- if .Values.cxConfig.virtualInstanceId }}
-dxp.lxc.liferay.com/virtualInstanceId: {{ .Values.cxConfig.virtualInstanceId }}
+{{- if .Values.clientExtensionConfig.virtualInstanceId }}
+dxp.lxc.liferay.com/virtualInstanceId: {{ .Values.clientExtensionConfig.virtualInstanceId }}
 {{- end }}
-ext.lxc.liferay.com/serviceId: {{ include "liferay-cx.appname" . }}
+ext.lxc.liferay.com/serviceId: {{ include "liferay-client-extension.appname" . }}
 {{- end }}
 
 {{/*
 Selector labels
 */}}
-{{- define "liferay-cx.selectorLabels" -}}
-app: {{ include "liferay-cx.appname" . }}
-app.kubernetes.io/name: {{ include "liferay-cx.name" . }}
+{{- define "liferay-client-extension.selectorLabels" -}}
+app: {{ include "liferay-client-extension.appname" . }}
+app.kubernetes.io/name: {{ include "liferay-client-extension.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Ext Provision ConfigMap name
 */}}
-{{- define "liferay-cx.ext-provision-configmap.name" -}}
-{{- printf "%s-%s-lxc-ext-provision-metadata" .Release.Name .Values.cxConfig.virtualInstanceId | trunc 63 }}
+{{- define "liferay-client-extension.ext-provision-configmap.name" -}}
+{{- printf "%s-%s-lxc-ext-provision-metadata" .Release.Name .Values.clientExtensionConfig.virtualInstanceId | trunc 63 }}
 {{- end }}
 
 {{/*
 Ext Provision ConfigMap labels
 */}}
-{{- define "liferay-cx.ext-provision-configmap.labels" -}}
-{{ include "liferay-cx.labels" . }}
+{{- define "liferay-client-extension.ext-provision-configmap.labels" -}}
+{{ include "liferay-client-extension.labels" . }}
 lxc.liferay.com/metadataType: "ext-provision"
 {{- end }}
 
 {{/*
 Ext Provision ConfigMap annotations
 */}}
-{{- define "liferay-cx.ext-provision-configmap.annotations" -}}
-ext.lxc.liferay.com/mainDomain: {{ .Values.cxConfig.domain }}
-ext.lxc.liferay.com/domains: {{ .Values.cxConfig.domain }}
+{{- define "liferay-client-extension.ext-provision-configmap.annotations" -}}
+ext.lxc.liferay.com/mainDomain: {{ .Values.clientExtensionConfig.domain }}
+ext.lxc.liferay.com/domains: {{ .Values.clientExtensionConfig.domain }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "liferay-cx.serviceAccountName" -}}
+{{- define "liferay-client-extension.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "liferay-cx.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "liferay-client-extension.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

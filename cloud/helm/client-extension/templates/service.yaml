@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "liferay-cx.fullname" . }}
+  name: {{ include "liferay-client-extension.fullname" . }}
   labels:
-    {{- include "liferay-cx.labels" . | nindent 4 }}
+    {{- include "liferay-client-extension.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "liferay-cx.selectorLabels" . | nindent 4 }}
+    {{- include "liferay-client-extension.selectorLabels" . | nindent 4 }}
