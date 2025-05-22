@@ -1,0 +1,23 @@
+clientExtensionConfig:
+  configJson: |
+    {
+      "com.liferay.client.extension.type.configuration.CETConfiguration~liferay-sample-theme-favicon" : {
+        ":configurator:policy" : "force",
+        "baseURL" : "${portalURL}/o/liferay-sample-theme-favicon",
+        "buildTimestamp" : 1745862841667,
+        "description" : "",
+        "dxp.lxc.liferay.com.virtualInstanceId" : "default",
+        "name" : "Liferay Sample Theme Favicon",
+        "projectId" : "liferaysamplethemefavicon",
+        "projectName" : "liferay-sample-theme-favicon",
+        "properties" : [ ],
+        "sourceCodeURL" : "",
+        "type" : "themeFavicon",
+        "typeSettings" : [ "url=favicon.ede86c41bfce8f631bb7386d5682f3ad4c1ab19c.ico" ],
+        "webContextPath" : "/liferay-sample-theme-favicon"
+      }
+    }
+  domain: "favicon.docker.localhost"
+  virtualInstanceId: "main.dxp.docker.localhost"
+image:
+  repository: registry:5001/favicon

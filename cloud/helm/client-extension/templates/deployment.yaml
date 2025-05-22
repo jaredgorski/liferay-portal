@@ -38,6 +38,11 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          env:
+            - name: LIFERAY_ROUTES_CLIENT_EXTENSION
+              value: /etc/liferay/lxc/ext-init-metadata
+            - name: LIFERAY_ROUTES_DXP
+              value: /etc/liferay/lxc/dxp-metadata
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -56,14 +61,14 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            - mountPath: /etc/liferay/lxc/dxp-metadata
+              name: lxc-dxp-metadata
+              readOnly: true
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        - name: lxc-dxp-metadata
+          configMap:
+            name: {{ include "dxp-configmap.name" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -63,10 +63,17 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+DXP ConfigMap name
+*/}}
+{{- define "dxp-configmap.name" -}}
+{{- printf "%s-lxc-dxp-metadata" .Values.clientExtensionConfig.virtualInstanceId }}
+{{- end }}
+
+{{/*
 Ext Provision ConfigMap name
 */}}
 {{- define "liferay-client-extension.ext-provision-configmap.name" -}}
-{{- printf "%s-%s-lxc-ext-provision-metadata" .Release.Name .Values.clientExtensionConfig.virtualInstanceId | trunc 63 }}
+{{- printf "%s-%s-lxc-ext-provision-metadata" .Release.Name .Values.clientExtensionConfig.virtualInstanceId }}
 {{- end }}
 
 {{/*
