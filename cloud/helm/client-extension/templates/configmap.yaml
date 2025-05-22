@@ -7,4 +7,4 @@ metadata:
   annotations:
     {{- include "liferay-client-extension.ext-provision-configmap.annotations" . | nindent 4 }}
 data:
-  {{ .Release.Name }}.client-extension-config.json: {{ .Values.clientExtensionConfig.configJson | toJson }}
+  {{ .Release.Name }}.client-extension-config.json: {{ .Values.clientExtensionConfig.configJson | fromJson | toPrettyJson }}
