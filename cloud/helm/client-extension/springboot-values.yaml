@@ -124,9 +124,9 @@ clientExtensionConfig:
         "webContextPath" : "/liferay-sample-etc-spring-boot"
       }
     }
-  domain: "springboot.docker.localhost"
+  domain: "springboot.localtest.me"
   mountInitConfig: true
-  virtualInstanceId: "main.dxp.docker.localhost"
+  virtualInstanceId: "main.dxp.localtest.me"
 image:
   repository: registry:5000/springboot
 livenessProbe:
