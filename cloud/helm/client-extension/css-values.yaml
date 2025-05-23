@@ -20,4 +20,4 @@ clientExtensionConfig:
   domain: "css.docker.localhost"
   virtualInstanceId: "main.dxp.docker.localhost"
 image:
-  repository: registry:5001/css
+  repository: registry:5000/css

@@ -20,7 +20,7 @@ clientExtensionConfig:
   domain: "element.docker.localhost"
   virtualInstanceId: "main.dxp.docker.localhost"
 image:
-  repository: registry:5001/element
+  repository: registry:5000/element
 livenessProbe:
   httpGet:
     path: /
