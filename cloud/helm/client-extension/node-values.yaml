@@ -59,7 +59,7 @@ clientExtensionConfig:
   mountInitConfig: true
   virtualInstanceId: "main.dxp.docker.localhost"
 image:
-  repository: registry:5001/node
+  repository: registry:5000/node
 livenessProbe:
   httpGet:
     path: /ready

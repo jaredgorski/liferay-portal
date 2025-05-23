@@ -128,7 +128,7 @@ clientExtensionConfig:
   mountInitConfig: true
   virtualInstanceId: "main.dxp.docker.localhost"
 image:
-  repository: registry:5001/springboot
+  repository: registry:5000/springboot
 livenessProbe:
   httpGet:
     path: /ready
