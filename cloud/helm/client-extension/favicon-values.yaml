@@ -17,7 +17,7 @@ clientExtensionConfig:
         "webContextPath" : "/liferay-sample-theme-favicon"
       }
     }
-  domain: "favicon.docker.localhost"
-  virtualInstanceId: "main.dxp.docker.localhost"
+  domain: "favicon.localtest.me"
+  virtualInstanceId: "main.dxp.localtest.me"
 image:
   repository: registry:5000/favicon
