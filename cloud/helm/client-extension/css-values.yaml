@@ -17,7 +17,7 @@ clientExtensionConfig:
         "webContextPath" : "/liferay-sample-theme-css-1"
       }
     }
-  domain: "css.docker.localhost"
-  virtualInstanceId: "main.dxp.docker.localhost"
+  domain: "css.localtest.me"
+  virtualInstanceId: "main.dxp.localtest.me"
 image:
   repository: registry:5000/css

@@ -17,8 +17,8 @@ clientExtensionConfig:
         "webContextPath" : "/liferay-sample-custom-element-1"
       }
     }
-  domain: "counter.docker.localhost"
-  virtualInstanceId: "main.dxp.docker.localhost"
+  domain: "counter.localtest.me"
+  virtualInstanceId: "main.dxp.localtest.me"
 image:
   repository: registry:5000/counter
 livenessProbe:
