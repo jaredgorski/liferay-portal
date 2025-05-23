@@ -65,20 +65,20 @@ spec:
             - mountPath: /etc/liferay/lxc/dxp-metadata
               name: lxc-dxp-metadata
               readOnly: true
-              {{- if .Values.clientExtensionConfig.mountInitConfig }}
-              - mountPath: /etc/liferay/lxc/ext-init-metadata
-                name: lxc-ext-init-metadata
-                readOnly: true
-              {{- end }}
+            {{- if .Values.clientExtensionConfig.mountInitConfig }}
+            - mountPath: /etc/liferay/lxc/ext-init-metadata
+              name: lxc-ext-init-metadata
+              readOnly: true
+            {{- end }}
       volumes:
         - name: lxc-dxp-metadata
           configMap:
             name: {{ include "dxp-configmap.name" . }}
-          {{- if .Values.clientExtensionConfig.mountInitConfig }}
-          - name: lxc-ext-init-metadata
-            configMap:
-              name: {{ include "liferay-client-extension.ext-init-configmap.name" . }}
-          {{- end }}
+        {{- if .Values.clientExtensionConfig.mountInitConfig }}
+        - name: lxc-ext-init-metadata
+          configMap:
+            name: {{ include "liferay-client-extension.ext-init-configmap.name" . }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
