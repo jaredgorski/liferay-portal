@@ -20,7 +20,7 @@ clientExtensionConfig:
   domain: "counter.docker.localhost"
   virtualInstanceId: "main.dxp.docker.localhost"
 image:
-  repository: registry:5001/counter
+  repository: registry:5000/counter
 livenessProbe:
   httpGet:
     path: /
