@@ -20,4 +20,4 @@ clientExtensionConfig:
   domain: "favicon.docker.localhost"
   virtualInstanceId: "main.dxp.docker.localhost"
 image:
-  repository: registry:5001/favicon
+  repository: registry:5000/favicon
