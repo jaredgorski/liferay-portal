@@ -93,6 +93,13 @@ ext.lxc.liferay.com/domains: {{ .Values.clientExtensionConfig.domain }}
 {{- end }}
 
 {{/*
+Init Provision ConfigMap name
+*/}}
+{{- define "liferay-client-extension.ext-init-configmap.name" -}}
+{{- printf "%s-%s-lxc-ext-init-metadata" .Release.Name .Values.clientExtensionConfig.virtualInstanceId }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "liferay-client-extension.serviceAccountName" -}}
