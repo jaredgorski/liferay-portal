@@ -1,3 +1,4 @@
+{{- if .Values.clientExtensionConfig.localdev -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -49,3 +50,4 @@ spec:
             defaultMode: 0777
       restartPolicy: Never
       serviceAccountName: internal-hook-serviceaccount
+{{- end -}}
