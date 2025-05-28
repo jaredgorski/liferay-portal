@@ -18,6 +18,7 @@ clientExtensionConfig:
       }
     }
   domain: "favicon.localtest.me"
+  localdev: true
   virtualInstanceId: "main.dxp.localtest.me"
 image:
   repository: registry:5000/favicon
