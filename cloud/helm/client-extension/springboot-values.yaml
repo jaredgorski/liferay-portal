@@ -125,6 +125,7 @@ clientExtensionConfig:
       }
     }
   domain: "springboot.localtest.me"
+  localdev: true
   mountInitConfig: true
   virtualInstanceId: "main.dxp.localtest.me"
 image:

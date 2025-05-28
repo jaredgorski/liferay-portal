@@ -7,6 +7,8 @@ autoscaling:
 clientExtensionConfig:
   configJson: ""
   domain: ""
+  localdev: false
+  mountInitConfig: false
   virtualInstanceId: ""
 fullnameOverride: ""
 image:
