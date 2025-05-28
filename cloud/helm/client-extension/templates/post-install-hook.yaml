@@ -32,7 +32,7 @@ spec:
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
     spec:
       containers:
-      - name: post-install-job
+      - name: "{{ .Release.Name }}-post-install-job"
         image: bitnami/kubectl:1.33.1
         imagePullPolicy: IfNotPresent
         command: [
@@ -49,5 +49,5 @@ spec:
             name: {{ .Release.Name }}-post-install-configmap
             defaultMode: 0777
       restartPolicy: Never
-      serviceAccountName: internal-hook-serviceaccount
+      serviceAccountName: "{{ .Release.Name }}-internal-hook-serviceaccount"
 {{- end -}}
