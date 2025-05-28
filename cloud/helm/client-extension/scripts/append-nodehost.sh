@@ -19,7 +19,7 @@ desanitize () {
 NODEHOSTS_KEY="NodeHosts: |"
 NEW_NODEHOST_LINE="    ${K3D_INTERNAL_HOST_IP} ${NODEHOST_TO_APPEND}"
 NEW_NODEHOSTS_SECTION=$(printf '%s\n%s' "$NODEHOSTS_KEY" "$NEW_NODEHOST_LINE")
-NEW_NODEHOSTS_SECTION_SANITIZED=$(echo -n "$NEW_NODEHOSTS_SECTION" | sanitize)
+NEW_NODEHOSTS_SECTION_SANITIZED=$(printf "$NEW_NODEHOSTS_SECTION" | sanitize)
 
 cat "$coredns_configmap_file" | sed -e "s/${NODEHOSTS_KEY}/${NEW_NODEHOSTS_SECTION_SANITIZED}/g" | desanitize >"$new_coredns_configmap_file"
 
