@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 NODEHOST_TO_REMOVE="$1"
 K3D_INTERNAL_HOST_IP="172.18.0.3"
