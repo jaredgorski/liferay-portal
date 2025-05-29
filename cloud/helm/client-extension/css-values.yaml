@@ -18,6 +18,7 @@ clientExtensionConfig:
       }
     }
   domain: "css.localtest.me"
+  kind: Deployment
   localdev: true
   virtualInstanceId: "main.dxp.localtest.me"
 image:
