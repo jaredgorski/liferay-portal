@@ -25,12 +25,6 @@ image:
   repository: registry:5000/counter
 ingress:
   enabled: true
-livenessProbe:
-  httpGet:
-    path: /
-readinessProbe:
-  httpGet:
-    path: /
 service:
   enabled: true
   port: 80
