@@ -19,6 +19,7 @@ imagePullSecrets: []
 ingress:
   annotations: {}
   className: ""
+  enabled: false
   hosts: []
   tls: []
 livenessProbe:
@@ -38,6 +39,7 @@ replicaCount: 1
 resources: {}
 securityContext: {}
 service:
+  enabled: false
   port: 80
   type: ClusterIP
 serviceAccount:
