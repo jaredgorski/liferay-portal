@@ -56,6 +56,7 @@ clientExtensionConfig:
       }
     }
   domain: "node.localtest.me"
+  kind: Deployment
   localdev: true
   mountInitConfig: true
   virtualInstanceId: "main.dxp.localtest.me"

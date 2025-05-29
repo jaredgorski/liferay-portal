@@ -18,6 +18,7 @@ clientExtensionConfig:
       }
     }
   domain: "counter.localtest.me"
+  kind: Deployment
   localdev: true
   virtualInstanceId: "main.dxp.localtest.me"
 image:
