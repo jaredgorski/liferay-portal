@@ -11,6 +11,7 @@ clientExtensionConfig:
   localdev: false
   mountInitConfig: false
   virtualInstanceId: ""
+env: []
 fullnameOverride: ""
 image:
   pullPolicy: Always

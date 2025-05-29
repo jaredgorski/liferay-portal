@@ -44,6 +44,10 @@ spec:
               value: /etc/liferay/lxc/ext-init-metadata
             - name: LIFERAY_ROUTES_DXP
               value: /etc/liferay/lxc/dxp-metadata
+            {{- range .Values.env }}
+            - name: {{ .name }}
+              value: {{ .value }}
+            {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
