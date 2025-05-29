@@ -32,4 +32,4 @@ env:
   - name: LIFERAY_BATCH_OAUTH_APP_ERC
     value: liferay-sample-batch-oauth-application-headless-server
 image:
-  repository: registry:5001/batch
+  repository: registry:5000/batch
