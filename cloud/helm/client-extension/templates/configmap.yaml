@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: {{ include "liferay-client-extension.ext-provision-configmap.name" . }}
-    labels:
-        {{- include "liferay-client-extension.ext-provision-configmap.labels" . | nindent 16 }}
     annotations:
         {{- include "liferay-client-extension.ext-provision-configmap.annotations" . | nindent 16 }}
+    labels:
+        {{- include "liferay-client-extension.ext-provision-configmap.labels" . | nindent 16 }}
+    name: {{ include "liferay-client-extension.ext-provision-configmap.name" . }}
 data:
     {{ .Release.Name }}.client-extension-config.json: {{ .Values.clientExtensionConfig.configJson | fromJson | toPrettyJson | quote }}

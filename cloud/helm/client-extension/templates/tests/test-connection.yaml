@@ -2,16 +2,16 @@
 apiVersion: v1
 kind: Pod
 metadata:
-    name: "{{ include "liferay-client-extension.fullname" . }}-test-connection"
-    labels:
-        {{- include "liferay-client-extension.labels" . | nindent 16 }}
     annotations:
         "helm.sh/hook": test
+    labels:
+        {{- include "liferay-client-extension.labels" . | nindent 16 }}
+    name: "{{ include "liferay-client-extension.fullname" . }}-test-connection"
 spec:
     containers:
-        -   name: wget
-            image: busybox
+        -   args: ['{{ include "liferay-client-extension.fullname" . }}:{{ .Values.service.port }}']
             command: ['wget']
-            args: ['{{ include "liferay-client-extension.fullname" . }}:{{ .Values.service.port }}']
+            image: busybox
+            name: wget
     restartPolicy: Never
 {{- end -}}
