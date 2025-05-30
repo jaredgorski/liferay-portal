@@ -30,16 +30,19 @@ Init Provision ConfigMap name
 Ext Provision ConfigMap annotations
 */}}
 {{- define "liferay-client-extension.ext-provision-configmap.annotations" -}}
-ext.lxc.liferay.com/domains: {{ .Values.clientExtensionConfig.domain }}
-ext.lxc.liferay.com/mainDomain: {{ .Values.clientExtensionConfig.domain }}
+ext.lxc.liferay.com/domains: {{ .Values.clientExtensionConfig.mainDomain }}
+ext.lxc.liferay.com/mainDomain: {{ .Values.clientExtensionConfig.mainDomain }}
+{{- with .Values.annotations }}
+{{ toYaml . }}
+{{- end }}
 {{- end }}
 
 {{/*
 Ext Provision ConfigMap labels
 */}}
 {{- define "liferay-client-extension.ext-provision-configmap.labels" -}}
-{{ include "liferay-client-extension.labels" . }}
 lxc.liferay.com/metadataType: "ext-provision"
+{{ include "liferay-client-extension.labels" . }}
 {{- end }}
 
 {{/*
@@ -81,6 +84,9 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 dxp.lxc.liferay.com/virtualInstanceId: {{ .Values.clientExtensionConfig.virtualInstanceId }}
 {{- end }}
 ext.lxc.liferay.com/serviceId: {{ include "liferay-client-extension.appname" . }}
+{{- with .Values.labels }}
+{{ toYaml . }}
+{{- end }}
 {{- end }}
 
 {{/*

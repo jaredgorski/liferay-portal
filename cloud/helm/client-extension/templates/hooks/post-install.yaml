@@ -1,4 +1,4 @@
-{{- if .Values.clientExtensionConfig.localdev -}}
+{{- if .Values.clientExtensionConfig.setupMainDomainOnCoreDNS -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:

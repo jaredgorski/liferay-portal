@@ -9,8 +9,8 @@
                 }
             },
             "required": [
-                "configJson",
-                "domain",
+                "configJsons",
+                "mainDomain",
                 "virtualInstanceId"
             ],
             "type": "object"

@@ -7,4 +7,6 @@ metadata:
         {{- include "liferay-client-extension.ext-provision-configmap.labels" . | nindent 16 }}
     name: {{ include "liferay-client-extension.ext-provision-configmap.name" . }}
 data:
-    {{ .Release.Name }}.client-extension-config.json: {{ .Values.clientExtensionConfig.configJson | fromJson | toPrettyJson | quote }}
+    {{- range $index, $configJson := .Values.clientExtensionConfig.configJsons }}
+    {{ $.Release.Name }}-{{ $index }}.client-extension-config.json: {{ $configJson | fromJson | toPrettyJson | quote }}
+    {{- end }}

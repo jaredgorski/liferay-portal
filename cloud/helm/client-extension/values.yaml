@@ -5,13 +5,13 @@ autoscaling:
     minReplicas: 1
     targetCPUUtilizationPercentage: 80
 clientExtensionConfig:
-    configJson: ""
-    domain: ""
+    configJsons: []
     kind: ""
-    localdev: false
+    mainDomain: ""
     mountInitConfig: false
+    setupMainDomainOnCoreDNS: false
     virtualInstanceId: ""
-env: []
+env: {}
 fullnameOverride: ""
 image:
     pullPolicy: Always
@@ -24,6 +24,7 @@ ingress:
     enabled: false
     hosts: []
     tls: []
+labels: {}
 livenessProbe:
     httpGet:
         path: /

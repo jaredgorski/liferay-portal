@@ -14,7 +14,7 @@ spec:
     ingressClassName: {{ . }}
     {{- end }}
     rules:
-        -   host: {{ .Values.clientExtensionConfig.domain | quote }}
+        -   host: {{ .Values.clientExtensionConfig.mainDomain | quote }}
             http:
                 paths:
                     -   backend:

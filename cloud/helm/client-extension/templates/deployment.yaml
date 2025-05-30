@@ -2,6 +2,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+    {{- with .Values.annotations }}
+    annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
     labels:
         {{- include "liferay-client-extension.labels" . | nindent 16 }}
     name: {{ include "liferay-client-extension.fullname" . }}
@@ -34,9 +38,9 @@ spec:
                             value: /etc/liferay/lxc/ext-init-metadata
                         -   name: LIFERAY_ROUTES_DXP
                             value: /etc/liferay/lxc/dxp-metadata
-                        {{- range .Values.env }}
-                        -   name: {{ .name }}
-                            value: {{ .value }}
+                        {{- range $k, $v := .Values.env }}
+                        -   name: {{ $k }}
+                            value: {{ $v }}
                         {{- end }}
                     image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
                     imagePullPolicy: {{ .Values.image.pullPolicy }}
