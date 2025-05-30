@@ -1,4 +1,5 @@
 affinity: {}
+annotations: {}
 autoscaling:
     enabled: false
     maxReplicas: 100
