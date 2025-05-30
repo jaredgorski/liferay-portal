@@ -1,23 +1,23 @@
 {
-  "$schema": "http://json-schema.org/schema#",
-  "type": "object",
-  "required": [
-    "clientExtensionConfig"
-  ],
-  "properties": {
-    "clientExtensionConfig": {
-      "type": "object",
-      "required": [
-        "configJson",
-        "domain",
-        "virtualInstanceId"
-      ],
-      "properties": {
-        "kind": {
-          "type": "string",
-          "pattern": "^(Deployment|Job)?$"
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "required": [
+        "clientExtensionConfig"
+    ],
+    "properties": {
+        "clientExtensionConfig": {
+            "type": "object",
+            "required": [
+                "configJson",
+                "domain",
+                "virtualInstanceId"
+            ],
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "pattern": "^(Deployment|Job)?$"
+                }
+            }
         }
-      }
     }
-  }
 }

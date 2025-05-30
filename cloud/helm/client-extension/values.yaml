@@ -1,54 +1,54 @@
 affinity: {}
 autoscaling:
-  enabled: false
-  maxReplicas: 100
-  minReplicas: 1
-  targetCPUUtilizationPercentage: 80
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
 clientExtensionConfig:
-  configJson: ""
-  domain: ""
-  kind: ""
-  localdev: false
-  mountInitConfig: false
-  virtualInstanceId: ""
+    configJson: ""
+    domain: ""
+    kind: ""
+    localdev: false
+    mountInitConfig: false
+    virtualInstanceId: ""
 env: []
 fullnameOverride: ""
 image:
-  pullPolicy: Always
-  repository: ""
-  tag: latest
+    pullPolicy: Always
+    repository: ""
+    tag: latest
 imagePullSecrets: []
 ingress:
-  annotations: {}
-  className: ""
-  enabled: false
-  hosts: []
-  tls: []
+    annotations: {}
+    className: ""
+    enabled: false
+    hosts: []
+    tls: []
 livenessProbe:
-  httpGet:
-    path: /
-    port: http
+    httpGet:
+        path: /
+        port: http
 nameOverride: ""
 nodeSelector: {}
 podAnnotations: {}
 podLabels: {}
 podSecurityContext: {}
 readinessProbe:
-  httpGet:
-    path: /
-    port: http
+    httpGet:
+        path: /
+        port: http
 replicaCount: 1
 resources: {}
 securityContext: {}
 service:
-  enabled: false
-  port: 80
-  type: ClusterIP
+    enabled: false
+    port: 80
+    type: ClusterIP
 serviceAccount:
-  annotations: {}
-  automount: true
-  create: false
-  name: ""
+    annotations: {}
+    automount: true
+    create: false
+    name: ""
 tolerations: []
 volumeMounts: []
 volumes: []

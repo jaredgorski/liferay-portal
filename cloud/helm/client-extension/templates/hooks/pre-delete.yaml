@@ -2,52 +2,52 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-pre-delete-configmap
-  namespace: kube-system
+    name: {{ .Release.Name }}-pre-delete-configmap
+    namespace: kube-system
 data:
-  append-nodehost.sh: |-
-{{ .Files.Get "scripts/remove-nodehost.sh" | indent 4}}
+    append-nodehost.sh: |-
+{{ .Files.Get "scripts/remove-nodehost.sh" | indent 16}}
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ .Release.Name }}-pre-delete-job
-  namespace: kube-system
-  labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
-    app.kubernetes.io/instance: {{ .Release.Name | quote }}
-    app.kubernetes.io/version: {{ .Chart.AppVersion }}
-    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-  annotations:
-    "helm.sh/hook": pre-delete
-    "helm.sh/hook-weight": "0"
-    "helm.sh/hook-delete-policy": hook-succeeded
-spec:
-  template:
-    metadata:
-      name: "{{ .Release.Name }}"
-      labels:
+    name: {{ .Release.Name }}-pre-delete-job
+    namespace: kube-system
+    labels:
         app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
         app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        app.kubernetes.io/version: {{ .Chart.AppVersion }}
         helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
-    spec:
-      containers:
-      - name: "{{ .Release.Name }}-pre-delete-job"
-        image: bitnami/kubectl:1.33.1
-        imagePullPolicy: IfNotPresent
-        command: [
-          "/bin/bash",
-          "-c",
-          "/opt/scripts/append-nodehost.sh {{ .Values.clientExtensionConfig.domain }}"
-        ]
-        volumeMounts:
-          - name: config-volume
-            mountPath: /opt/scripts
-      volumes:
-        - name: config-volume
-          configMap:
-            name: {{ .Release.Name }}-pre-delete-configmap
-            defaultMode: 0777
-      restartPolicy: Never
-      serviceAccountName: "{{ .Release.Name }}-internal-hook-serviceaccount"
+    annotations:
+        "helm.sh/hook": pre-delete
+        "helm.sh/hook-weight": "0"
+        "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+    template:
+        metadata:
+            name: "{{ .Release.Name }}"
+            labels:
+                app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+                app.kubernetes.io/instance: {{ .Release.Name | quote }}
+                helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        spec:
+            containers:
+            -   name: "{{ .Release.Name }}-pre-delete-job"
+                image: bitnami/kubectl:1.33.1
+                imagePullPolicy: IfNotPresent
+                command: [
+                    "/bin/bash",
+                    "-c",
+                    "/opt/scripts/append-nodehost.sh {{ .Values.clientExtensionConfig.domain }}"
+                ]
+                volumeMounts:
+                    -   name: config-volume
+                        mountPath: /opt/scripts
+            volumes:
+                -   name: config-volume
+                    configMap:
+                        name: {{ .Release.Name }}-pre-delete-configmap
+                        defaultMode: 0777
+            restartPolicy: Never
+            serviceAccountName: "{{ .Release.Name }}-internal-hook-serviceaccount"
 {{- end -}}

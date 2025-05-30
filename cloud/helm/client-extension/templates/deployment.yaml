@@ -2,98 +2,98 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "liferay-client-extension.fullname" . }}
-  labels:
-    {{- include "liferay-client-extension.labels" . | nindent 4 }}
+    name: {{ include "liferay-client-extension.fullname" . }}
+    labels:
+        {{- include "liferay-client-extension.labels" . | nindent 16 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
-  selector:
-    matchLabels:
-      {{- include "liferay-client-extension.selectorLabels" . | nindent 6 }}
-  template:
-    metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      labels:
-        {{- include "liferay-client-extension.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
-    spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "liferay-client-extension.serviceAccountName" . }}
-      {{- with .Values.podSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      containers:
-        - name: {{ .Chart.Name }}
-          {{- with .Values.securityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          env:
-            - name: LIFERAY_ROUTES_CLIENT_EXTENSION
-              value: /etc/liferay/lxc/ext-init-metadata
-            - name: LIFERAY_ROUTES_DXP
-              value: /etc/liferay/lxc/dxp-metadata
-            {{- range .Values.env }}
-            - name: {{ .name }}
-              value: {{ .value }}
+    {{- if not .Values.autoscaling.enabled }}
+    replicas: {{ .Values.replicaCount }}
+    {{- end }}
+    selector:
+        matchLabels:
+            {{- include "liferay-client-extension.selectorLabels" . | nindent 12 }}
+    template:
+        metadata:
+            {{- with .Values.podAnnotations }}
+            annotations:
+                {{- toYaml . | nindent 16 }}
             {{- end }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          {{- with .Values.livenessProbe }}
-          livenessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.readinessProbe }}
-          readinessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.resources }}
-          resources:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          volumeMounts:
-            - mountPath: /etc/liferay/lxc/dxp-metadata
-              name: lxc-dxp-metadata
-              readOnly: true
-            {{- if .Values.clientExtensionConfig.mountInitConfig }}
-            - mountPath: /etc/liferay/lxc/ext-init-metadata
-              name: lxc-ext-init-metadata
-              readOnly: true
+            labels:
+                {{- include "liferay-client-extension.labels" . | nindent 16 }}
+                {{- with .Values.podLabels }}
+                {{- toYaml . | nindent 16 }}
+                {{- end }}
+        spec:
+            {{- with .Values.imagePullSecrets }}
+            imagePullSecrets:
+                {{- toYaml . | nindent 16 }}
             {{- end }}
-      volumes:
-        - name: lxc-dxp-metadata
-          configMap:
-            name: {{ include "dxp-configmap.name" . }}
-        {{- if .Values.clientExtensionConfig.mountInitConfig }}
-        - name: lxc-ext-init-metadata
-          configMap:
-            name: {{ include "liferay-client-extension.ext-init-configmap.name" . }}
-        {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+            serviceAccountName: {{ include "liferay-client-extension.serviceAccountName" . }}
+            {{- with .Values.podSecurityContext }}
+            securityContext:
+                {{- toYaml . | nindent 16 }}
+            {{- end }}
+            containers:
+                -   name: {{ .Chart.Name }}
+                    {{- with .Values.securityContext }}
+                    securityContext:
+                        {{- toYaml . | nindent 24 }}
+                    {{- end }}
+                    env:
+                        -   name: LIFERAY_ROUTES_CLIENT_EXTENSION
+                            value: /etc/liferay/lxc/ext-init-metadata
+                        -   name: LIFERAY_ROUTES_DXP
+                            value: /etc/liferay/lxc/dxp-metadata
+                        {{- range .Values.env }}
+                        -   name: {{ .name }}
+                            value: {{ .value }}
+                        {{- end }}
+                    image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+                    imagePullPolicy: {{ .Values.image.pullPolicy }}
+                    ports:
+                        -   name: http
+                            containerPort: {{ .Values.service.port }}
+                            protocol: TCP
+                    {{- with .Values.livenessProbe }}
+                    livenessProbe:
+                        {{- toYaml . | nindent 24 }}
+                    {{- end }}
+                    {{- with .Values.readinessProbe }}
+                    readinessProbe:
+                        {{- toYaml . | nindent 24 }}
+                    {{- end }}
+                    {{- with .Values.resources }}
+                    resources:
+                        {{- toYaml . | nindent 24 }}
+                    {{- end }}
+                    volumeMounts:
+                        -   mountPath: /etc/liferay/lxc/dxp-metadata
+                            name: lxc-dxp-metadata
+                            readOnly: true
+                        {{- if .Values.clientExtensionConfig.mountInitConfig }}
+                        -   mountPath: /etc/liferay/lxc/ext-init-metadata
+                            name: lxc-ext-init-metadata
+                            readOnly: true
+                        {{- end }}
+            volumes:
+                -   name: lxc-dxp-metadata
+                    configMap:
+                        name: {{ include "dxp-configmap.name" . }}
+                {{- if .Values.clientExtensionConfig.mountInitConfig }}
+                -   name: lxc-ext-init-metadata
+                    configMap:
+                        name: {{ include "liferay-client-extension.ext-init-configmap.name" . }}
+                {{- end }}
+            {{- with .Values.nodeSelector }}
+            nodeSelector:
+                {{- toYaml . | nindent 16 }}
+            {{- end }}
+            {{- with .Values.affinity }}
+            affinity:
+                {{- toYaml . | nindent 16 }}
+            {{- end }}
+            {{- with .Values.tolerations }}
+            tolerations:
+                {{- toYaml . | nindent 16 }}
+            {{- end }}
 {{- end }}

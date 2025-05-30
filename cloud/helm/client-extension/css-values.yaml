@@ -1,30 +1,30 @@
 clientExtensionConfig:
-  configJson: |
-    {
-      "com.liferay.client.extension.type.configuration.CETConfiguration~liferay-sample-theme-css-1" : {
-        ":configurator:policy" : "force",
-        "baseURL" : "${portalURL}/o/liferay-sample-theme-css-1",
-        "buildTimestamp" : 1747768702891,
-        "description" : "",
-        "dxp.lxc.liferay.com.virtualInstanceId" : "default",
-        "name" : "Liferay Sample Theme CSS 1",
-        "projectId" : "liferaysamplethemecss1",
-        "projectName" : "liferay-sample-theme-css-1",
-        "properties" : [ ],
-        "sourceCodeURL" : "",
-        "type" : "themeCSS",
-        "typeSettings" : [ "mainRTLURL=css/main_rtl.css", "clayRTLURL=css/clay_rtl.css", "clayURL=css/clay.css", "mainURL=css/main.css" ],
-        "webContextPath" : "/liferay-sample-theme-css-1"
-      }
-    }
-  domain: "css.localtest.me"
-  kind: Deployment
-  localdev: true
-  virtualInstanceId: "main.dxp.localtest.me"
+    configJson: |
+        {
+            "com.liferay.client.extension.type.configuration.CETConfiguration~liferay-sample-theme-css-1" : {
+                ":configurator:policy" : "force",
+                "baseURL" : "${portalURL}/o/liferay-sample-theme-css-1",
+                "buildTimestamp" : 1747768702891,
+                "description" : "",
+                "dxp.lxc.liferay.com.virtualInstanceId" : "default",
+                "name" : "Liferay Sample Theme CSS 1",
+                "projectId" : "liferaysamplethemecss1",
+                "projectName" : "liferay-sample-theme-css-1",
+                "properties" : [ ],
+                "sourceCodeURL" : "",
+                "type" : "themeCSS",
+                "typeSettings" : [ "mainRTLURL=css/main_rtl.css", "clayRTLURL=css/clay_rtl.css", "clayURL=css/clay.css", "mainURL=css/main.css" ],
+                "webContextPath" : "/liferay-sample-theme-css-1"
+            }
+        }
+    domain: "css.localtest.me"
+    kind: Deployment
+    localdev: true
+    virtualInstanceId: "main.dxp.localtest.me"
 image:
-  repository: registry:5000/css
+    repository: registry:5000/css
 ingress:
-  enabled: true
+    enabled: true
 service:
-  enabled: true
-  port: 80
+    enabled: true
+    port: 80

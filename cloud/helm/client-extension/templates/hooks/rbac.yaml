@@ -2,38 +2,38 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: "{{ .Release.Name }}-internal-hook-role"
-  namespace: kube-system
+    name: "{{ .Release.Name }}-internal-hook-role"
+    namespace: kube-system
 rules:
-  - apiGroups: [""]
-    resources:
-      - configmaps
-    verbs:
-      - get
-      - patch
-  - apiGroups: ["apps"]
-    resources:
-      - deployments
-    verbs:
-      - get
-      - patch
+    -   apiGroups: [""]
+        resources:
+            - configmaps
+        verbs:
+            - get
+            - patch
+    -   apiGroups: ["apps"]
+        resources:
+            - deployments
+        verbs:
+            - get
+            - patch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: "{{ .Release.Name }}-internal-hook-rolebinding"
-  namespace: kube-system
+    name: "{{ .Release.Name }}-internal-hook-rolebinding"
+    namespace: kube-system
 subjects:
-  - kind: ServiceAccount
-    name: "{{ .Release.Name }}-internal-hook-serviceaccount"
+    -   kind: ServiceAccount
+        name: "{{ .Release.Name }}-internal-hook-serviceaccount"
 roleRef:
-  kind: Role
-  name: "{{ .Release.Name }}-internal-hook-role"
-  apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: "{{ .Release.Name }}-internal-hook-role"
+    apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: "{{ .Release.Name }}-internal-hook-serviceaccount"
-  namespace: kube-system
+    name: "{{ .Release.Name }}-internal-hook-serviceaccount"
+    namespace: kube-system
 {{- end -}}
