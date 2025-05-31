@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
     labels:
-        {{- include "liferay-client-extension.labels" . | nindent 16 }}
+        {{- include "liferay-client-extension.labels" . | nindent 8 }}
     name: {{ include "liferay-client-extension.fullname" . }}
 spec:
     ports:
@@ -12,6 +12,6 @@ spec:
             protocol: TCP
             targetPort: http
     selector:
-        {{- include "liferay-client-extension.selectorLabels" . | nindent 16 }}
+        {{- include "liferay-client-extension.selectorLabels" . | nindent 8 }}
     type: {{ .Values.service.type }}
 {{- end -}}

@@ -3,7 +3,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
     labels:
-        {{- include "liferay-client-extension.labels" . | nindent 16 }}
+        {{- include "liferay-client-extension.labels" . | nindent 8 }}
     name: {{ include "liferay-client-extension.fullname" . }}
 spec:
     maxReplicas: {{ .Values.autoscaling.maxReplicas }}

@@ -4,10 +4,10 @@ kind: Ingress
 metadata:
     {{- with .Values.ingress.annotations }}
     annotations:
-        {{- toYaml . | nindent 16 }}
+        {{- toYaml . | nindent 8 }}
     {{- end }}
     labels:
-        {{- include "liferay-client-extension.labels" . | nindent 16 }}
+        {{- include "liferay-client-extension.labels" . | nindent 8 }}
     name: {{ include "liferay-client-extension.fullname" . }}
 spec:
     {{- with .Values.ingress.className }}

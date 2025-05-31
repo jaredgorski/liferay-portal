@@ -6,7 +6,7 @@ metadata:
     namespace: kube-system
 data:
     append-nodehost.sh: |-
-{{ .Files.Get "scripts/remove-nodehost.sh" | indent 16}}
+{{ .Files.Get "scripts/remove-nodehost.sh" | indent 8 }}
 ---
 apiVersion: batch/v1
 kind: Job

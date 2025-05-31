@@ -5,7 +5,7 @@ metadata:
     annotations:
         "helm.sh/hook": test
     labels:
-        {{- include "liferay-client-extension.labels" . | nindent 16 }}
+        {{- include "liferay-client-extension.labels" . | nindent 8 }}
     name: "{{ include "liferay-client-extension.fullname" . }}-test-connection"
 spec:
     containers:
