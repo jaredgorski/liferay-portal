@@ -4,7 +4,7 @@
         "clientExtensionConfig": {
             "properties": {
                 "kind": {
-                    "pattern": "^(Deployment|Job)?$",
+                    "pattern": "^(CronJob|Deployment|Job)?$",
                     "type": "string"
                 }
             },
