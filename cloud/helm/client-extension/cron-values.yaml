@@ -1,0 +1,12 @@
+clientExtensionConfig:
+    configJsons:
+        - |
+            {
+            }
+    cronSchedule: "* * * * *"
+    kind: CronJob
+    mainDomain: "cron.localtest.me"
+    setupMainDomainOnCoreDNS: true
+    virtualInstanceId: "main.dxp.localtest.me"
+image:
+    repository: registry:5000/cron
