@@ -10,6 +10,7 @@ metadata:
         {{- include "liferay-client-extension.labels" . | nindent 8 }}
     name: {{ include "liferay-client-extension.fullname" . }}
 spec:
+    concurrencyPolicy: Forbid
     jobTemplate:
         spec:
             template:
