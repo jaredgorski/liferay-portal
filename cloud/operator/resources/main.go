@@ -4,16 +4,15 @@ import (
 	"os"
 
 	"github.com/caarlos0/env/v11"
-	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	ctrl "sigs.k8s.io/controller-runtime"
-	"sigs.k8s.io/controller-runtime/pkg/cache"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
+	"github.com/liferay/liferay-portal/cloud/operator/internal/cache"
 	"github.com/liferay/liferay-portal/cloud/operator/internal/controller"
 )
 
@@ -29,13 +28,7 @@ func main() {
 	mgr, err := ctrl.NewManager(
 		ctrl.GetConfigOrDie(),
 		ctrl.Options{
-			Cache: cache.Options{
-				DefaultLabelSelector: labels.SelectorFromSet(
-					map[string]string{
-						"controller-watched": "yes",
-					},
-				),
-			},
+			Cache:                  cache.GetCacheOptions(),
 			HealthProbeBindAddress: cfg.ProbeAddress,
 			Metrics: metricsserver.Options{
 				BindAddress: cfg.MetricsAddress,
@@ -62,10 +55,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	reconciler := &controller.Reconciler{Client: mgr.GetClient()}
+	dxpMetadataConfigMapController := &controller.DXPMetadataConfigMapController{Client: mgr.GetClient()}
 
-	if err := reconciler.SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "Unable to create controller.")
+	if err := dxpMetadataConfigMapController.SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "Unable to create DXPMetadataConfigMapController.")
 
 		os.Exit(1)
 	}
