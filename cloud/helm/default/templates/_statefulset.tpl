@@ -81,15 +81,16 @@ spec:
                     startupProbe:
                         {{- toYaml . | nindent 22 }}
                     {{- end }}
-                    {{- if or .statefulset.volumeMounts .statefulset.customVolumeMounts}}
                     volumeMounts:
+                        -   mountPath: /etc/liferay/mount/files/deploy/license.xml
+                            name: liferay-license
+                            subPath: license.xml
                         {{- with .statefulset.volumeMounts }}
                         {{- toYaml . | nindent 22 }}
                         {{- end }}
                         {{- range $k, $v := .statefulset.customVolumeMounts }}
                         {{- toYaml $v | nindent 22 }}
                         {{- end }}
-                    {{- end }}
             {{- if or .statefulset.pullSecrets .statefulset.customPullSecrets}}
             imagePullSecrets:
                 {{- with .statefulset.pullSecrets }}
@@ -138,15 +139,16 @@ spec:
             tolerations:
             {{- toYaml . | nindent 12 }}
             {{- end }}
-            {{- if or .statefulset.volumes .statefulset.customVolumes }}
             volumes:
+                -   name: liferay-license
+                    secret:
+                        secretName: {{ include "liferay.licenseSecretName" .root }}
                 {{- with .statefulset.volumes }}
                 {{- toYaml . | nindent 16 }}
                 {{- end }}
                 {{- range $k, $v := .statefulset.customVolumes }}
                 {{- toYaml $v | nindent 16 }}
                 {{- end }}
-            {{- end }}
     {{- with .statefulset.updateStrategy }}
     updateStrategy:
         {{- toYaml . | nindent 8 }}
