@@ -31,66 +31,74 @@ spec:
             {{- end }}
             containers:
                 -   #
-                    {{- if or .statefulset.env .statefulset.customEnv }}
+                    {{- if or .statefulset.customEnv .statefulset.env .statefulset.subscription.enabled }}
                     env:
+                        {{- if .statefulset.subscription.enabled }}
+                        -   name: "LIFERAY_DISABLE_TRIAL_LICENSE"
+                            value: "true"
+                        {{- end -}}
                         {{- with .statefulset.env }}
-                        {{- toYaml . | nindent 22 }}
+                        {{- toYaml . | nindent 24 }}
                         {{- end }}
                         {{- range $k, $v := .statefulset.customEnv }}
-                        {{- toYaml $v | nindent 22 }}
+                        {{- toYaml $v | nindent 24 }}
                         {{- end }}
                     {{- end }}
                     {{- if or .statefulset.envFrom .statefulset.customEnvFrom }}
                     envFrom:
                         {{- with .statefulset.envFrom }}
-                        {{- toYaml . | nindent 22 }}
+                        {{- toYaml . | nindent 24 }}
                         {{- end }}
                         {{- range $k, $v := .statefulset.customEnvFrom }}
-                        {{- toYaml $v | nindent 22 }}
+                        {{- toYaml $v | nindent 24 }}
                         {{- end }}
                     {{- end }}
                     image: {{ printf "%s:%s" .statefulset.image.repository (.statefulset.image.tag | toString) }}
                     imagePullPolicy: {{ .statefulset.image.pullPolicy }}
                     {{- with .statefulset.livenessProbe }}
                     livenessProbe:
-                        {{- toYaml . | nindent 22 }}
+                        {{- toYaml . | nindent 24 }}
                     {{- end }}
                     name: {{ include "liferay.name" .root }}{{ $suffix }}
                     {{- if or .statefulset.ports .statefulset.customPorts }}
                     ports:
                         {{- with .statefulset.ports }}
-                        {{- toYaml . | nindent 22 }}
+                        {{- toYaml . | nindent 24 }}
                         {{- end }}
                         {{- range $k, $v := .statefulset.customPorts }}
-                        {{- toYaml $v | nindent 22 }}
+                        {{- toYaml $v | nindent 24 }}
                         {{- end }}
                     {{- end }}
                     {{- with .statefulset.readinessProbe }}
                     readinessProbe:
-                        {{- toYaml . | nindent 22 }}
+                        {{- toYaml . | nindent 24 }}
                     {{- end }}
                     {{- with .statefulset.resources }}
                     resources:
-                        {{- toYaml . | nindent 22 }}
+                        {{- toYaml . | nindent 24 }}
                     {{- end }}
                     {{- with .statefulset.securityContext }}
                     securityContext:
-                        {{- toYaml . | nindent 22 }}
+                        {{- toYaml . | nindent 24 }}
                     {{- end }}
                     {{- with .statefulset.startupProbe }}
                     startupProbe:
-                        {{- toYaml . | nindent 22 }}
+                        {{- toYaml . | nindent 24 }}
                     {{- end }}
+                    {{- if or .statefulset.customVolumeMounts .statefulset.volumeMounts .statefulset.subscription.enabled }}
                     volumeMounts:
+                        {{- if .statefulset.subscription.enabled }}
                         -   mountPath: /etc/liferay/mount/files/deploy/license.xml
                             name: liferay-license
                             subPath: license.xml
+                        {{- end }}
                         {{- with .statefulset.volumeMounts }}
                         {{- toYaml . | nindent 24 }}
                         {{- end }}
                         {{- range $k, $v := .statefulset.customVolumeMounts }}
                         {{- toYaml $v | nindent 24 }}
                         {{- end }}
+                    {{- end }}
             {{- if or .statefulset.pullSecrets .statefulset.customPullSecrets}}
             imagePullSecrets:
                 {{- with .statefulset.pullSecrets }}
@@ -139,16 +147,20 @@ spec:
             tolerations:
             {{- toYaml . | nindent 12 }}
             {{- end }}
+            {{- if or .statefulset.customVolumes .statefulset.volumes .statefulset.subscription.enabled }}
             volumes:
+                {{- if .statefulset.subscription.enabled }}
                 -   name: liferay-license
                     secret:
                         secretName: {{ include "liferay.licenseSecretName" .root }}
+                {{- end }}
                 {{- with .statefulset.volumes }}
                 {{- toYaml . | nindent 16 }}
                 {{- end }}
                 {{- range $k, $v := .statefulset.customVolumes }}
                 {{- toYaml $v | nindent 16 }}
                 {{- end }}
+            {{- end }}
     {{- with .statefulset.updateStrategy }}
     updateStrategy:
         {{- toYaml . | nindent 8 }}
