@@ -16,10 +16,7 @@ configmap:
     annotations: {}
     data: {}
     overrideDefaults: false
-customEnv:
-    x-license:
-        -   name: LIFERAY_DISABLE_TRIAL_LICENSE
-            value: "true"
+customEnv: {}
 customEnvFrom: {}
 customInitContainers: {}
 customLabels:
@@ -248,6 +245,7 @@ startupProbe:
     periodSeconds: 5
 subscription:
     authToken: testtoken
+    enabled: false
     host: "http://localhost:8787"
     id: testsubscriptionid
     path: "/o/provisioning-rest/v1.0/subscription/"
