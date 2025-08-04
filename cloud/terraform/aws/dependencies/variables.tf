@@ -50,10 +50,10 @@ variable "node_security_group_id" {
 	type=string
 }
 variable "private_subnet_ids" {
-	type=list
+	type=list(string)
 }
 variable "public_subnet_ids" {
-	type=list
+	type=list(string)
 }
 variable "region" {
 	type=string
