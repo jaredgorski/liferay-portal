@@ -35,6 +35,7 @@ source "amazon-ebs" "this" {
         most_recent=true
     }
     ssh_username="ec2-user"
+    ssh_clear_authorized_keys=true
 }
 variable "ami_name" {
     default="liferay-ami-govcloud-bootstrap"
