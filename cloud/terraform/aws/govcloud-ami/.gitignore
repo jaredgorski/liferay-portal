@@ -1,0 +1,10 @@
+# Terraform state and lock files
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.lock.hcl
+
+# Terraform plugins
+.terraform/
+
+# Packer build artifacts
+manifest.json
