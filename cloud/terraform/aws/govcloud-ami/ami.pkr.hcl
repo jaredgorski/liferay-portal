@@ -4,13 +4,16 @@ build {
         output="manifest.json"
         strip_path=true
     }
+
+    # provisioner order must be maintained
+    provisioner "shell" {
+        script="install_tools.sh"
+    }
     provisioner "file" {
         source      = "../"
         destination = "/opt/liferay/terraform"
     }
-    provisioner "shell" {
-        script="install_tools.sh"
-    }
+
     sources=[
         "source.amazon-ebs.this"
     ]
