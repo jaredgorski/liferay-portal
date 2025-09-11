@@ -4,6 +4,10 @@ build {
         output="manifest.json"
         strip_path=true
     }
+    provisioner "file" {
+        source      = "../"
+        destination = "/opt/liferay/terraform"
+    }
     provisioner "shell" {
         script="install_tools.sh"
     }
