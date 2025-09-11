@@ -13,6 +13,14 @@ build {
         source      = "../"
         destination = "/opt/liferay/terraform"
     }
+    provisioner "file" {
+        source      = "run-on-boot.sh"
+        destination = "/usr/local/bin/run-on-boot.sh"
+    }
+    provisioner "file" {
+        source      = "run-on-boot.cfg"
+        destination = "/etc/cloud/cloud.cfg.d/99-run-on-boot.cfg"
+    }
 
     sources=[
         "source.amazon-ebs.this"
