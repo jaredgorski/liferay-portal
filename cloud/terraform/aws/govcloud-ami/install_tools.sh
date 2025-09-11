@@ -34,3 +34,7 @@ curl --fail-with-body --location --show-error --silent https://raw.githubusercon
 chmod 700 get_helm.sh
 ./get_helm.sh
 rm get_helm.sh
+
+# Additional Setup
+
+mkdir -p /opt/liferay/terraform
