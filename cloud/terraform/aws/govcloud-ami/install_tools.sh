@@ -36,5 +36,5 @@ chmod 700 get_helm.sh
 rm get_helm.sh
 
 # Additional Setup
-
-mkdir -p /opt/liferay/terraform
+sudo mkdir --parents /opt/liferay/terraform
+sudo chown --recursive 1000:1000 /opt/liferay
