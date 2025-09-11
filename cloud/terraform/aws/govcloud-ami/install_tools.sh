@@ -2,11 +2,11 @@
 
 # Install dependencies
 sudo yum update --assumeyes
-sudo yum install --assumeyes git tree shadow-utils unzip yum-utils
+sudo yum install --assumeyes git jq tree shadow-utils unzip yum-utils
 
 # Install AWS CLI
 curl --fail-with-body --location --show-error --silent "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" --output "awscliv2.zip"
-unzip awscliv2.zip
+unzip awscliv2.zip -x "aws/dist/awscli/examples/*"
 sudo ./aws/install
 rm awscliv2.zip
 

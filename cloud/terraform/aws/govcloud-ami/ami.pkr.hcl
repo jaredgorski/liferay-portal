@@ -15,11 +15,17 @@ build {
     }
     provisioner "file" {
         source      = "run-on-boot.sh"
-        destination = "/usr/local/bin/run-on-boot.sh"
+        destination = "/tmp/run-on-boot.sh"
     }
     provisioner "file" {
         source      = "run-on-boot.cfg"
-        destination = "/etc/cloud/cloud.cfg.d/99-run-on-boot.cfg"
+        destination = "/tmp/run-on-boot.cfg"
+    }
+    provisioner "shell" {
+        inline = [
+            "sudo mv /tmp/run-on-boot.sh /usr/local/bin/run-on-boot.sh",
+            "sudo mv /tmp/run-on-boot.cfg /etc/cloud/cloud.cfg.d/99-run-on-boot.cfg"
+        ]
     }
 
     sources=[
