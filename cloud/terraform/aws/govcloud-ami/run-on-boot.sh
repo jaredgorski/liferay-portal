@@ -21,7 +21,7 @@ tree /opt/liferay
 	then
 		terraform init
 		terraform apply -auto-approve \
-			-var="deployment_name=lfr-ami-${INSTANCE_ID}" \
+			-var="deployment_name=lfr-ami" \
 			-var="region=${REGION}"
 		terraform output > ../dependencies/terraform.tfvars
 	fi
