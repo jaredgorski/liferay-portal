@@ -35,6 +35,32 @@ chmod 700 get_helm.sh
 ./get_helm.sh
 rm get_helm.sh
 
-# Additional Setup
-sudo mkdir --parents /opt/liferay/terraform
+# Setup Liferay Cloud Native
+CHART_DIR=/opt/liferay/awsmp-chart
+TERRAFORM_DIR=/opt/liferay/terraform
+
+sudo mkdir --parents "${TERRAFORM_DIR}"
+sudo mkdir --parents "${CHART_DIR}"
+
 sudo chown --recursive 1000:1000 /opt/liferay
+
+# Install Liferay Cloud Native
+CHART_VERSION=0.0.5-20250429134228
+ECR_HOST=709825985650.dkr.ecr.us-east-1.amazonaws.com
+OCI_ENDPOINT="oci://${ECR_HOST}/liferay/charts"
+
+export HELM_EXPERIMENTAL_OCI=1
+
+aws ecr get-login-password --region us-east-1 | helm registry login "${ECR_HOST}" \
+	--username AWS \
+	--password-stdin
+
+cd "${CHART_DIR}"
+
+helm pull "${OCI_ENDPOINT}" --version "${CHART_VERSION}"
+
+tar xf "$(pwd)/*" && find "$(pwd)" -maxdepth 1 -type f -delete
+
+helm install liferay ./* \
+	--create-namespace \
+	--namespace liferay-system
