@@ -4,4 +4,4 @@ liferay-aws:
             origin: liferay-aws-marketplace
         image:
             repository: 709825985650.dkr.ecr.us-east-1.amazonaws.com/liferay/containers
-            tag: 0.0.0
+            tag: latest
