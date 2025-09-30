@@ -4,8 +4,18 @@ export AWS_PROFILE=AWSAdministratorAccess-831926597587
 
 DXP_TAG="${1?Argument specifying DXP image tag is required.}"
 ECR_HOST=709825985650.dkr.ecr.us-east-1.amazonaws.com
-IMAGE_DESTINATION="${ECR_HOST}/liferay/containers:${DXP_TAG}"
+ECR_REPOSITORY="liferay/containers5"
+IMAGE_DESTINATION="${ECR_HOST}/${ECR_REPOSITORY}:${DXP_TAG}"
 IMAGE_SOURCE="docker.io/liferay/dxp:${DXP_TAG}"
+
+assert_lts() {
+	if [[ "${DXP_TAG}" != *lts* ]]
+	then
+		echo "DXP tag is not LTS. Aborting."
+
+		exit 1
+	fi
+}
 
 assert_not_nightly() {
 	if [[ "${DXP_TAG}" == *nightly* ]]
@@ -76,6 +86,8 @@ copy_dxp_image_to_ecr_with_retry() {
 
 main() {
 	echo "Using DXP Image Tag: ${DXP_TAG}"
+
+	assert_lts
 
 	assert_not_nightly
 
