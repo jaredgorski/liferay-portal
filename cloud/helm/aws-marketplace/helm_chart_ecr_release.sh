@@ -21,11 +21,18 @@ configure_aws_ecr() {
 }
 
 push_chart_to_ecr() {
+	if ! command -v oras >/dev/null 2>&1
+	then
+		echo "Install `oras` CLI to continue: https://oras.land/docs/installation"
+
+		exit 1
+	fi
+
 	helm dependency update
 
 	helm package .
 
-	helm push "${PACKAGED_CHART_FILENAME}" "oci://${RELEASE_DESTINATION}"
+	oras push "${RELEASE_DESTINATION}" "${PACKAGED_CHART_FILENAME}"
 
 	echo "Contents of ECR repository ${ECR_REPOSITORY}:"
 
