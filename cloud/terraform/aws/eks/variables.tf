@@ -19,6 +19,9 @@ variable "ecr_repositories" {
 	type=map(object({ arn=string, url=string }))
 	default={}
 }
+variable "gitea_hostname" {
+	default="git.local"
+}
 variable "node_group_ami_type" {
 	default="AL2023_x86_64_STANDARD"
 }

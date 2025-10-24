@@ -6,8 +6,11 @@ data "aws_availability_zones" "available" {
 }
 data "aws_caller_identity" "current" {
 }
+data "aws_eks_cluster" "cluster" {
+	name=module.eks.cluster_name
+}
 data "aws_eks_cluster_auth" "current" {
-	name = module.eks.cluster_name
+	name=module.eks.cluster_name
 }
 data "aws_eks_cluster_versions" "available" {
 	region=var.region
