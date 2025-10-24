@@ -77,7 +77,7 @@ module "eks" {
 	security_group_id=aws_security_group.cluster.id
 	source="terraform-aws-modules/eks/aws"
 	subnet_ids=module.vpc.private_subnets
-	version="21.3.1"
+	version="21.6.1"
 	vpc_id=module.vpc.vpc_id
 }
 resource "aws_iam_role" "ebs_csi_driver" {
