@@ -30,7 +30,7 @@ jobs:
 
                         echo "CHART_VERSION_AWS=${CHART_VERSION_AWS}" >> ${GITHUB_ENV}
 
-                        echo "should_publish=true" >> $GITHUB_OUTPUT
+                        echo "should_publish=true" >> ${GITHUB_OUTPUT}
                     else
                         echo "Chart version ${CHART_VERSION_AWS} already exists. Skipping publish."
                     fi
@@ -93,7 +93,7 @@ jobs:
 
                         echo "CHART_VERSION_AWS_MARKETPLACE=${CHART_VERSION_AWS_MARKETPLACE}" >> ${GITHUB_ENV}
 
-                        echo "should_publish=true" >> $GITHUB_OUTPUT
+                        echo "should_publish=true" >> ${GITHUB_OUTPUT}
                     else
                         echo "Chart version ${CHART_VERSION_AWS_MARKETPLACE} already exists. Skipping publish."
                     fi
@@ -135,7 +135,7 @@ jobs:
 
                         echo "CHART_VERSION_DEFAULT=${CHART_VERSION_DEFAULT}" >> ${GITHUB_ENV}
 
-                        echo "should_publish=true" >> $GITHUB_OUTPUT
+                        echo "should_publish=true" >> ${GITHUB_OUTPUT}
                     else
                         echo "Chart version ${CHART_VERSION_DEFAULT} already exists. Skipping publish."
                     fi
