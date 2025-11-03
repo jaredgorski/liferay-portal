@@ -8,6 +8,7 @@ jobs:
     publish-aws:
         env:
             CHART_VERSION_AWS: 0.0.0
+        if: (github.repository == 'liferay/liferay-portal')
         needs: publish-default
         runs-on: ubuntu-latest
         steps:
@@ -59,6 +60,7 @@ jobs:
     publish-aws-marketplace:
         env:
             CHART_VERSION_AWS_MARKETPLACE: 0.0.0
+        if: (github.repository == 'liferay/liferay-portal')
         needs: [
             publish-aws,
             publish-default,
@@ -116,6 +118,7 @@ jobs:
     publish-default:
         env:
             CHART_VERSION_DEFAULT: 0.0.0
+        if: (github.repository == 'liferay/liferay-portal')
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout code
