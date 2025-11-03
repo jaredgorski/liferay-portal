@@ -2,13 +2,12 @@ defaults:
     run:
         shell: bash
 env:
-    CHART_VERSION_AWS: 0.0.0
-    CHART_VERSION_AWS_MARKETPLACE: 0.0.0
-    CHART_VERSION_DEFAULT: 0.0.0
     ECR_REGISTRY: 709825985650.dkr.ecr.us-east-1.amazonaws.com
     GAR_REGISTRY: us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart
 jobs:
     publish-aws:
+        env:
+            CHART_VERSION_AWS: 0.0.0
         needs: publish-default
         runs-on: ubuntu-latest
         steps:
@@ -17,7 +16,7 @@ jobs:
             -   env:
                     GITHUB_TOKEN: ${{ github.token }}
                 id: verify_version
-                name: Verify AWS Helm chart version
+                name: Verify Helm chart version
                 run: |
                     CHART_VERSION_AWS=$(cat ./Chart.yaml | yq .version)
 
@@ -38,7 +37,7 @@ jobs:
                 name: Log in to GAR
                 run: echo "${{ secrets.GAR_PASSWORD }}" | helm registry login ${GAR_REGISTRY} --password-stdin --username _json_key_base64
             -   if: ${{ steps.verify_version.outputs.should_publish == 'true' }}
-                name: Package and Push Helm chart
+                name: Package and push Helm chart
                 run: |
                     DIST_DIR="${{ runner.temp }}/aws/dist"
 
@@ -48,24 +47,25 @@ jobs:
 
                     helm dependency update
 
-                    helm package --destination "${DIST_DIR}"
+                    helm package . --destination "${DIST_DIR}" --version "${CHART_VERSION_AWS}"
 
                     for file_name in ${DIST_DIR}/*.tgz
                     do
                         echo "Pushing ${file_name}."
 
-                        # helm push "${file_name}" "oci://${GAR_REGISTRY}"
-                        echo "HELM PUSHED"
+                        helm push "${file_name}" "oci://${GAR_REGISTRY}"
                     done
                 working-directory: ./cloud/helm/aws
     publish-aws-marketplace:
+        env:
+            CHART_VERSION_AWS_MARKETPLACE: 0.0.0
         needs: [
             publish-aws,
             publish-default,
         ]
         runs-on: ubuntu-latest
         steps:
-            -   name: Configure AWS Credentials
+            -   name: Configure AWS credentials
                 uses: aws-actions/configure-aws-credentials@v5.1.0
                 with:
                     aws-region: us-east-1
@@ -98,23 +98,24 @@ jobs:
                     fi
                 working-directory: ./cloud/helm/aws-marketplace
             -   if: ${{ steps.verify_version.outputs.should_publish == 'true' }}
-                name: Package and Push Helm chart
+                name: Package and push Helm chart
                 run: |
                     mkdir "${{ runner.temp }}/dist"
 
                     helm dependency update
 
-                    helm package --destination "${{ runner.temp }}/dist" --version ${CHART_VERSION_AWS_MARKETPLACE} .
+                    helm package . --destination "${{ runner.temp }}/dist" --version "${CHART_VERSION_AWS_MARKETPLACE}"
 
                     for file_name in ${{ runner.temp }}/dist/*.tgz
                     do
                         echo "Pushing ${file_name}."
 
-                        # helm push "${file_name}" "oci://${ECR_REGISTRY}/liferay"
-                        echo "HELM PUSHED"
+                        helm push "${file_name}" "oci://${ECR_REGISTRY}/liferay"
                     done
                 working-directory: ./cloud/helm/aws-marketplace
     publish-default:
+        env:
+            CHART_VERSION_DEFAULT: 0.0.0
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout code
@@ -122,7 +123,7 @@ jobs:
             -   env:
                     GITHUB_TOKEN: ${{ github.token }}
                 id: verify_version
-                name: Verify default Helm chart version
+                name: Verify Helm chart version
                 run: |
                     CHART_VERSION_DEFAULT=$(cat ./Chart.yaml | yq .version)
 
@@ -143,7 +144,7 @@ jobs:
                 name: Log in to GAR
                 run: echo "${{ secrets.GAR_PASSWORD }}" | helm registry login ${GAR_REGISTRY} --password-stdin --username _json_key_base64
             -   if: ${{ steps.verify_version.outputs.should_publish == 'true' }}
-                name: Package and Push default Helm chart
+                name: Package and push Helm chart
                 run: |
                     DIST_DIR="${{ runner.temp }}/default/dist"
 
@@ -153,17 +154,20 @@ jobs:
 
                     helm dependency update
 
-                    helm package --destination "${DIST_DIR}"
+                    helm package . --destination "${DIST_DIR}" --version "${CHART_VERSION_DEFAULT}"
 
                     for file_name in ${DIST_DIR}/*.tgz
                     do
                         echo "Pushing ${file_name}."
 
-                        # helm push "${file_name}" "oci://${GAR_REGISTRY}"
-                        echo "HELM PUSHED"
+                        helm push "${file_name}" "oci://${GAR_REGISTRY}"
                     done
                 working-directory: ./cloud/helm/default
 on:
-    workflow_dispatch
+    push:
+        branches:
+            -   master
+        paths:
+            -   cloud/helm/**
 permissions:
     id-token: write
