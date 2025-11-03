@@ -9,7 +9,6 @@ env:
     GAR_REGISTRY: us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart
 jobs:
     publish-aws:
-        if: (github.repository == 'liferay/liferay-portal')
         needs: publish-default
         runs-on: ubuntu-latest
         steps:
@@ -55,11 +54,11 @@ jobs:
                     do
                         echo "Pushing ${file_name}."
 
-                        helm push "${file_name}" "oci://${GAR_REGISTRY}"
+                        # helm push "${file_name}" "oci://${GAR_REGISTRY}"
+                        echo "HELM PUSHED"
                     done
                 working-directory: ./cloud/helm/aws
     publish-aws-marketplace:
-        if: (github.repository == 'liferay/liferay-portal')
         needs: [
             publish-aws,
             publish-default,
@@ -111,11 +110,11 @@ jobs:
                     do
                         echo "Pushing ${file_name}."
 
-                        helm push "${file_name}" "oci://${ECR_REGISTRY}/liferay"
+                        # helm push "${file_name}" "oci://${ECR_REGISTRY}/liferay"
+                        echo "HELM PUSHED"
                     done
                 working-directory: ./cloud/helm/aws-marketplace
     publish-default:
-        if: (github.repository == 'liferay/liferay-portal')
         runs-on: ubuntu-latest
         steps:
             -   name: Checkout code
@@ -160,14 +159,11 @@ jobs:
                     do
                         echo "Pushing ${file_name}."
 
-                        helm push "${file_name}" "oci://${GAR_REGISTRY}"
+                        # helm push "${file_name}" "oci://${GAR_REGISTRY}"
+                        echo "HELM PUSHED"
                     done
                 working-directory: ./cloud/helm/default
 on:
-    push:
-        branches:
-            -   master
-        paths:
-            -   cloud/helm/**
+    workflow_dispatch
 permissions:
     id-token: write
