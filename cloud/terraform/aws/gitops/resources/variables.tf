@@ -20,6 +20,7 @@ variable "infrastructure_git_repo_config" {
 	default={
 		auth={}
 		source_paths={}
+		target={}
 	}
 	type=object(
 		{
@@ -37,6 +38,12 @@ variable "infrastructure_git_repo_config" {
 				base=optional(string, "liferay/projects/{{path[2]}}/base")
 				environments=optional(string, "liferay/projects/*/environments/*")
 				values_filename=optional(string, "infrastructure.yaml")
+			})
+			target=object({
+				name=optional(string, "{{path[2]}}-{{path[4]}}-infra")
+				namespaceSuffix=optional(string, "{{path[2]}}-{{path[4]}}")
+				slugEnvironmentId="{{path[4]}}"
+				slugProjectId="{{path[2]}}"
 			})
 			url=optional(string, null)
 		})
@@ -69,6 +76,7 @@ variable "liferay_git_repo_config" {
 	default={
 		auth={}
 		source_paths={}
+		target={}
 	}
 	type=object(
 		{
@@ -86,6 +94,12 @@ variable "liferay_git_repo_config" {
 				base=optional(string, "liferay/projects/{{path[2]}}/base")
 				environments=optional(string, "liferay/projects/*/environments/*")
 				values_filename=optional(string, "liferay.yaml")
+			})
+			target=object({
+				name=optional(string, "{{path[2]}}-{{path[4]}}-app")
+				namespaceSuffix=optional(string, "{{path[2]}}-{{path[4]}}")
+				slugEnvironmentId="{{path[4]}}"
+				slugProjectId="{{path[2]}}"
 			})
 		})
 	validation {

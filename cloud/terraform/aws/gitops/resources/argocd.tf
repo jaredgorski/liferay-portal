@@ -11,6 +11,9 @@ resource "kubernetes_manifest" "infrastructure_provider_application" {
 		apiVersion="argoproj.io/v1alpha1"
 		kind="Application"
 		metadata={
+			annotations={
+				"argocd.argoproj.io/compare-options"="IgnoreExtraneous"
+			}
 			finalizers=["resources-finalizer.argocd.argoproj.io"]
 			labels=merge(
 				local.common_labels,
@@ -77,10 +80,7 @@ resource "kubernetes_manifest" "infrastructure_provider_application" {
 				}
 				syncOptions=[
 					"CreateNamespace=true",
-					"ServerSideApply=true",
-					"ServerSideDiff=true",
 					"SkipDryRunOnMissingResource=true",
-					"Validate=false",
 				]
 			}
 		}
@@ -124,7 +124,10 @@ resource "kubernetes_manifest" "infrastructure_applicationset" {
 			]
 			template={
 				metadata={
-					name: "{{path[2]}}-{{path[4]}}-infra"
+					annotations={
+						"argocd.argoproj.io/compare-options"="IgnoreExtraneous"
+					}
+					name=var.infrastructure_git_repo_config.target.name
 				}
 				spec={
 					project=local.infrastructure_appproject_name
@@ -134,11 +137,11 @@ resource "kubernetes_manifest" "infrastructure_applicationset" {
 								parameters=[
 									{
 										name="environmentId"
-										value="{{path[4]}}"
+										value=var.infrastructure_git_repo_config.target.slugEnvironmentId
 									},
 									{
 										name="projectId"
-										value="{{path[2]}}"
+										value=var.infrastructure_git_repo_config.target.slugProjectId
 									},
 								]
 								valueFiles=[
@@ -161,19 +164,16 @@ resource "kubernetes_manifest" "infrastructure_applicationset" {
 						},
 					]
 					destination={
-						namespace="liferay-{{path[2]}}-{{path[4]}}"
+						namespace="liferay-{{var.infrastructure_git_repo_config.target.namespaceSuffix}}"
 						server="https://kubernetes.default.svc"
 					}
-					ignoreDifferences=[]
 					syncPolicy={
 						automated={
 							prune=true
 							selfHeal=true
 						}
 						syncOptions=[
-							"ApplyOutOfSyncOnly=true",
 							"CreateNamespace=true",
-							"RespectIgnoreDifferences=true",
 							"SkipDryRunOnMissingResource=true"
 						]
 					}
@@ -220,7 +220,10 @@ resource "kubernetes_manifest" "liferay_applicationset" {
 			]
 			template={
 				metadata={
-					name: "{{path[2]}}-{{path[4]}}-app"
+					annotations={
+						"argocd.argoproj.io/compare-options"="IgnoreExtraneous"
+					}
+					name=var.liferay_git_repo_config.target.name
 				}
 				spec={
 					project=local.liferay_appproject_name
@@ -257,7 +260,7 @@ resource "kubernetes_manifest" "liferay_applicationset" {
 						},
 					]
 					destination={
-						namespace="liferay-{{path[2]}}-{{path[4]}}"
+						namespace="liferay-{{var.liferay_git_repo_config.target.namespaceSuffix}}"
 						server="https://kubernetes.default.svc"
 					}
 					ignoreDifferences=[
@@ -274,10 +277,8 @@ resource "kubernetes_manifest" "liferay_applicationset" {
 							selfHeal=true
 						}
 						syncOptions=[
-							"ApplyOutOfSyncOnly=true",
 							"CreateNamespace=true",
 							"RespectIgnoreDifferences=true",
-							"SkipDryRunOnMissingResource=true"
 						]
 					}
 				}
@@ -312,10 +313,6 @@ resource "kubernetes_manifest" "infrastructure_appproject" {
 			description="ArgoCD Project for Liferay Cloud Native infrastructure."
 			destinations=[
 				{
-					namespace="*"
-					server="https://kubernetes.default.svc"
-				},
-				{
 					namespace=var.crossplane_namespace
 					server="https://kubernetes.default.svc"
 				},
@@ -344,6 +341,9 @@ resource "kubernetes_manifest" "liferay_appproject" {
 		apiVersion="argoproj.io/v1alpha1"
 		kind="AppProject"
 		metadata={
+			annotations={
+				"argocd.argoproj.io/compare-options"="IgnoreExtraneous"
+			}
 			name=local.liferay_appproject_name
 			namespace=var.argocd_namespace
 			labels=merge(
