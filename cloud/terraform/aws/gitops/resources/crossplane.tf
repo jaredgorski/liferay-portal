@@ -93,9 +93,10 @@ resource "aws_iam_policy" "provider_aws_rds_policy" {
 					"rds:AddTagsToResource",
 					"rds:CreateDBSubnetGroup",
 					"rds:DeleteDBSubnetGroup",
-					"rds:DescribeDBSubnetGroups",
 					"rds:DescribeDBParameters",
-					"rds:DescribeEngineDefaultParameters"
+					"rds:DescribeDBSubnetGroups",
+					"rds:DescribeEngineDefaultParameters",
+					"rds:ModifyDBSubnetGroup",
 				]
 				Resource="*"
 			},
@@ -148,6 +149,7 @@ resource "aws_iam_policy" "provider_aws_s3_policy" {
 					"s3:PutBucketVersioning",
 					"s3:PutBucketWebsite",
 					"s3:PutEncryptionConfiguration",
+					"s3:PutLifecycleConfiguration",
 				]
 				"Resource": ["arn:aws:s3:::*"]
 			},

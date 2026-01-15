@@ -9,6 +9,10 @@ data "aws_iam_roles" "opensearch_linked_role_lookup" {
 }
 data "aws_subnets" "private" {
 	filter {
+		name="tag:DeploymentName"
+		values=[var.deployment_name]
+	}
+	filter {
 		name="tag:kubernetes.io/role/internal-elb"
 		values=["1"]
 	}
@@ -18,5 +22,5 @@ data "aws_subnets" "private" {
 	}
 }
 data "aws_vpc" "current" {
-	id=local.vpc_config.vpc_id
+	id=data.aws_eks_cluster.cluster.vpc_config[0].vpc_id
 }

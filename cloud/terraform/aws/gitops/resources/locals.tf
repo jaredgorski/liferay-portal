@@ -114,5 +114,4 @@ locals {
 	oidc_provider=replace(data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer, "https://", "")
 	should_create_opensearch_linked_role=length(data.aws_iam_roles.opensearch_linked_role_lookup.arns) == 0
 	terraform_manager_name="liferay-cloud-native-terraform"
-	vpc_config=data.aws_eks_cluster.cluster.vpc_config[0]
 }

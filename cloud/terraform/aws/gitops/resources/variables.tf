@@ -42,8 +42,8 @@ variable "infrastructure_git_repo_config" {
 			target=object({
 				name=optional(string, "{{path[2]}}-{{path[4]}}-infra")
 				namespaceSuffix=optional(string, "{{path[2]}}-{{path[4]}}")
-				slugEnvironmentId="{{path[4]}}"
-				slugProjectId="{{path[2]}}"
+				slugEnvironmentId=optional(string, "{{path[4]}}")
+				slugProjectId=optional(string, "{{path[2]}}")
 			})
 			url=optional(string, null)
 		})
@@ -98,8 +98,8 @@ variable "liferay_git_repo_config" {
 			target=object({
 				name=optional(string, "{{path[2]}}-{{path[4]}}-app")
 				namespaceSuffix=optional(string, "{{path[2]}}-{{path[4]}}")
-				slugEnvironmentId="{{path[4]}}"
-				slugProjectId="{{path[2]}}"
+				slugEnvironmentId=optional(string, "{{path[4]}}")
+				slugProjectId=optional(string, "{{path[2]}}")
 			})
 		})
 	validation {

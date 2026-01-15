@@ -164,7 +164,7 @@ resource "kubernetes_manifest" "infrastructure_applicationset" {
 						},
 					]
 					destination={
-						namespace="liferay-{{var.infrastructure_git_repo_config.target.namespaceSuffix}}"
+						namespace="liferay-${var.infrastructure_git_repo_config.target.namespaceSuffix}"
 						server="https://kubernetes.default.svc"
 					}
 					syncPolicy={
@@ -260,7 +260,7 @@ resource "kubernetes_manifest" "liferay_applicationset" {
 						},
 					]
 					destination={
-						namespace="liferay-{{var.liferay_git_repo_config.target.namespaceSuffix}}"
+						namespace="liferay-${var.liferay_git_repo_config.target.namespaceSuffix}"
 						server="https://kubernetes.default.svc"
 					}
 					ignoreDifferences=[
