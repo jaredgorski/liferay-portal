@@ -27,7 +27,7 @@ locals {
 			--from-literal=password="$TOKEN" \
 			--from-literal=project=${local.liferay_appproject_name} \
 			--from-literal=type=helm \
-			--from-literal=url=${local.liferay_helm_chart_config.repo_url} \
+			--from-literal=url=${local.liferay_helm_chart_config.chart_url} \
 			--from-literal=username=AWS \
 			--namespace ${var.argocd_namespace} | kubectl apply -f -
 
@@ -83,22 +83,26 @@ locals {
 	liferay_appproject_name="liferay-application"
 	liferay_helm_chart_config=merge(
 		var.liferay_helm_chart_config,
-		var.liferay_helm_chart_config.chart == "liferay-default" ? {
+		{
+			chart_name=var.liferay_helm_chart_name
+			version=var.liferay_helm_chart_version,
+		},
+		var.liferay_helm_chart_name == "liferay-default" ? {
+			chart_url=coalesce(var.liferay_helm_chart_config.chart_url, "oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-default")
 			ecr_credentials_sync_required=false
 			region=var.region
-			repo_url=coalesce(var.liferay_helm_chart_config.repo_url, "oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-default")
 			values_scope_prefix=""
 		} : {},
-		var.liferay_helm_chart_config.chart == "liferay-aws" ? {
+		var.liferay_helm_chart_name == "liferay-aws" ? {
+			chart_url=coalesce(var.liferay_helm_chart_config.chart_url, "oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-aws")
 			ecr_credentials_sync_required=false
 			region=var.region
-			repo_url=coalesce(var.liferay_helm_chart_config.repo_url, "oci://us-central1-docker.pkg.dev/liferay-artifact-registry/liferay-helm-chart/liferay-aws")
 			values_scope_prefix="liferay-default."
 		} : {},
-		var.liferay_helm_chart_config.chart == "liferay-aws-marketplace" ? {
+		var.liferay_helm_chart_name == "liferay-aws-marketplace" ? {
+			chart_url=coalesce(var.liferay_helm_chart_config.chart_url, "709825985650.dkr.ecr.us-east-1.amazonaws.com")
 			ecr_credentials_sync_required=true
 			region="us-east-1"
-			repo_url=coalesce(var.liferay_helm_chart_config.repo_url, "709825985650.dkr.ecr.us-east-1.amazonaws.com")
 			values_scope_prefix="liferay-aws.liferay-default."
 		} : {},
 	)
