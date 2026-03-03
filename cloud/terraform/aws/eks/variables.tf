@@ -2,16 +2,10 @@ variable "arn_partition" {
 	default="aws"
 }
 variable "deployment_name" {
+	type=string
 	validation {
 		condition=can(regex("^[a-z0-9-]*$", var.deployment_name))
 		error_message="The deployment_name must contain only lowercase letters, numbers, and hyphens."
-	}
-}
-variable "deployment_namespace" {
-	default="liferay-system"
-	validation {
-		condition=can(regex("^[a-z0-9-]*$", var.deployment_namespace))
-		error_message="The deployment_namespace must contain only lowercase letters, numbers, and hyphens."
 	}
 }
 variable "ecr_repositories" {
