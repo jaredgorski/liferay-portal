@@ -111,7 +111,7 @@ function _popd {
 function _port_forward_argo_cd {
 	_pushd "${_ROOT_CLOUD_DIR}/terraform/aws/gitops/platform"
 
-	local argocd_namespace=$(terraform output -raw argocd_namespace)
+	local argocd_namespace=$(tofu output -raw argocd_namespace)
 
 	local argocd_password=$( \
 		kubectl \
@@ -153,8 +153,8 @@ function _setup_aws_eks {
 	aws \
 		eks \
 		update-kubeconfig \
-		--name "$(terraform output -raw cluster_name)" \
-		--region "$(terraform output -raw region)"
+		--name "$(tofu output -raw cluster_name)" \
+		--region "$(tofu output -raw region)"
 
 	echo "AWS EKS cluster setup complete."
 
@@ -178,9 +178,9 @@ function _setup_aws_gitops {
 function _init_and_apply {
 	_pushd "${1}"
 
-	terraform init
+	tofu init
 
-	terraform apply ${2}
+	tofu apply ${2}
 
 	_popd
 }
