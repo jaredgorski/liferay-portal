@@ -22,11 +22,11 @@ function main {
 
 	aws sso login
 
-	local terraform_args="$(_get_terraform_apply_args "${1}")"
+	local apply_args="$(_get_apply_args "${1}")"
 
-	_setup_aws_eks "${terraform_args}"
+	_setup_aws_eks "${apply_args}"
 
-	_setup_aws_gitops "${terraform_args}"
+	_setup_aws_gitops "${apply_args}"
 
 	_port_forward_argo_cd
 }
@@ -77,7 +77,7 @@ function _generate_tfvars {
 	echo "${tfvars_file} was generated successfully."
 }
 
-function _get_terraform_apply_args {
+function _get_apply_args {
 	local auto_approve="false"
 
 	local configuration_json_file="${1}"
@@ -146,7 +146,7 @@ function _setup_aws_eks {
 
 	echo "Setting up the AWS EKS cluster."
 
-	_terraform_init_and_apply "." "${1}"
+	_init_and_apply "." "${1}"
 
 	export KUBE_CONFIG_PATH="${HOME}/.kube/config"
 
@@ -166,16 +166,16 @@ function _setup_aws_gitops {
 
 	echo "Setting up GitOps infrastructure."
 
-	_terraform_init_and_apply "./platform" "${1}"
+	_init_and_apply "./platform" "${1}"
 
-	_terraform_init_and_apply "./resources" "${1}"
+	_init_and_apply "./resources" "${1}"
 
 	echo "GitOps infrastructure setup complete."
 
 	_popd
 }
 
-function _terraform_init_and_apply {
+function _init_and_apply {
 	_pushd "${1}"
 
 	terraform init
