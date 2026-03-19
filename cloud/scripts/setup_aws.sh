@@ -8,6 +8,8 @@ _SCRIPTS_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 _ROOT_CLOUD_DIR=$(cd "${_SCRIPTS_DIR}/.." && pwd)
 
+_TFVARS_FILE="${_SCRIPTS_DIR}/global_terraform.tfvars"
+
 function main {
 	if [ "${#}" -ne 1 ]
 	then
@@ -16,11 +18,14 @@ function main {
 		exit 1
 	fi
 
-	_generate_tfvars "${1}" "${_SCRIPTS_DIR}/global_terraform.tfvars"
+	_generate_tfvars "${1}" "${_TFVARS_FILE}"
 
-	echo "Attempting to login to your AWS account via SSO."
+	if ! aws sts get-caller-identity >/dev/null 2>&1
+	then
+		echo "Attempting to login to your AWS account via SSO."
 
-	aws sso login
+		aws sso login
+	fi
 
 	local terraform_args
 
@@ -93,7 +98,7 @@ function _get_terraform_apply_args {
 		auto_approve=$(jq --raw-output '.options.auto_approve' "${configuration_json_file}")
 	fi
 
-	local apply_args=("-var-file=${_SCRIPTS_DIR}/global_terraform.tfvars")
+	local apply_args=("-var-file=${_TFVARS_FILE}")
 
 	if [[ "${auto_approve}" == "true" ]]
 	then
@@ -110,6 +115,48 @@ function _get_terraform_apply_args {
 	fi
 
 	echo "${apply_args[@]}"
+}
+
+function _get_terraform_backend_args {
+	local configuration_json_file="${1}"
+
+	local backend_args=()
+
+	if jq --exit-status '.backend.dynamodb_table' "${configuration_json_file}" > /dev/null
+	then
+		local dynamodb_table=$(jq --raw-output '.backend.dynamodb_table' "${configuration_json_file}")
+
+		backend_args+=("-backend-config=dynamodb_table=${dynamodb_table}")
+	fi
+
+	if jq --exit-status '.backend.s3_bucket' "${configuration_json_file}" > /dev/null
+	then
+		local bucket=$(jq --raw-output '.backend.s3_bucket' "${configuration_json_file}")
+
+		backend_args+=("-backend-config=bucket=${bucket}")
+	fi
+
+	if jq --exit-status '.backend.region' "${configuration_json_file}" > /dev/null
+	then
+		local region=$(jq --raw-output '.backend.region' "${configuration_json_file}")
+
+		backend_args+=("-backend-config=region=${region}")
+	fi
+
+	echo "${backend_args[@]}"
+}
+
+function _get_terraform_backend_id {
+	local configuration_json_file="${1}"
+
+	local backend_id=""
+
+	if jq --exit-status '.backend.id' "${configuration_json_file}" > /dev/null
+	then
+		backend_id=$(jq --raw-output '.backend.id' "${configuration_json_file}")
+	fi
+
+	echo "${backend_id}"
 }
 
 function _popd {
@@ -220,7 +267,43 @@ function _set_up_aws_grafana {
 }
 
 function _terraform_init_and_apply {
+	local dir="${1}"
+
+	local apply_args="${2}"
+	local backend_args="${3}"
+	local backend_id="${4}"
+
+	_pushd "${dir}"
+
+	if [ -n "${backend_args}" ]
+	then
+		local backend_key="liferay/"
+
+		local state_name=$(basename "$(pwd)")
+
+		if [ -n "${backend_id}" ]
+		then
+			backend_key+="${backend_id}/"
+		fi
+
+		backend_key+="${state_name}"
+
+		terraform init -backend-config="key=${backend_key}.tfstate" -reconfigure ${backend_args} -upgrade
+	else
+		terraform init -upgrade
+	fi
+
+	terraform apply ${apply_args}
+
+	_popd
+}
+
+function _terraform_init_and_apply {
 	_pushd "${1}"
+
+	local backend_args
+
+	backend_args="$(_get_terraform_backend_args "${1}")"
 
 	terraform init -upgrade
 
